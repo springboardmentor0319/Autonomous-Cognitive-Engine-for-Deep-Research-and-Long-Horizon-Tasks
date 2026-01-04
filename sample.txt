@@ -1,2 +1,0 @@
-print ("Hi this is Sagar")
-print ("Hello World")
