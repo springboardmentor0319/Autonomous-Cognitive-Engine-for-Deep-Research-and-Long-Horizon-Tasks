@@ -13,7 +13,7 @@ model = ChatGoogleGenerativeAI(
 
 #Tool
 tavily_search_tool = TavilySearch(
-    max_results=5,
+    max_results=3,
     topic="general"
 )
 
