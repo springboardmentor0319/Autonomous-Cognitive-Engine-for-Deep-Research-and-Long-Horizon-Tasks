@@ -37,10 +37,30 @@ agent = create_agent(
     [tavily_search_tool, get_today_date, get_temperature]
 )
 
-user_input = "What nation hosted the Euro 2024? Include only wikipedia sources."
 
-for step in agent.stream(
-    {"messages": user_input},
-    stream_mode="values",
-):
-    step["messages"][-1].pretty_print()
+def run_query(query: str):
+    print("\n" + "=" * 80)
+    print(f"USER QUESTION: {query}")
+    print("=" * 80)
+
+    for step in agent.stream(
+        {"messages": query},
+        stream_mode="values",
+    ):
+        msg = step["messages"][-1]
+        if hasattr(msg, "content"):
+            print("AI RESPONSE:")
+            print(msg.content)
+
+
+# 🔹 TEST 1: Tavily Search tool
+run_query("What nation hosted the Euro 2024? Include only wikipedia sources.")
+
+# 🔹 TEST 2: Date tool
+run_query("What is today's date?")
+
+# 🔹 TEST 3: Temperature tool
+run_query("What is the temperature in Chennai?")
+
+# 🔹 TEST 4: Multi-tool reasoning
+run_query("Who hosted Euro 2024 and what is the temperature in Berlin?")
