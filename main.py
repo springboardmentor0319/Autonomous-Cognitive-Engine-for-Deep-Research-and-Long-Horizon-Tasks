@@ -33,8 +33,9 @@ def get_current_time() -> str:
 # Weather Tool
 @tool
 def get_weather(city: str, date: str) -> str:
-    """Returns weather information for a given city and date."""
-    return f"The weather in {city} on {date} is expected to be sunny."
+    """Fetch weather info using web search (semi-real)."""
+    query = f"weather in {city} on {date}"
+    return web_search(query)
 
 # Create agent
 agent = create_agent(
