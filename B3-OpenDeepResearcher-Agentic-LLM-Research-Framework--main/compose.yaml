@@ -1,0 +1,46 @@
+services:
+  langgraph:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - langgraph-checkpoints:/app/.langgraph_api
+    expose:
+      - '2024'
+    networks:
+      - internal
+
+  langgraph-proxy:
+    image: nginx:1.27-alpine
+    depends_on:
+      - langgraph
+    ports:
+      - '127.0.0.1:2024:80'
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - internal
+
+  agent-ui:
+    build:
+      context: ./agent-chat-ui
+      dockerfile: Dockerfile
+    depends_on:
+      - langgraph-proxy
+    environment:
+      NEXT_PUBLIC_API_URL: http://127.0.0.1:2024
+      NEXT_PUBLIC_ASSISTANT_ID: research_agent_full
+    ports:
+      - '127.0.0.1:3001:3000'
+    networks:
+      - internal
+
+volumes:
+  langgraph-checkpoints:
+    external: true
+
+networks:
+  internal:
+
