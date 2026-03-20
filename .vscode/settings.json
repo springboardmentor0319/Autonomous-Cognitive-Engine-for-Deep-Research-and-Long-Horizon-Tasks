@@ -1,0 +1,6 @@
+{
+    "python.terminal.useEnvFile": true,
+    "files.exclude": {
+        "**/.git": false
+    }
+}
